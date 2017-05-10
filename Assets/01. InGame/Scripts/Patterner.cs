@@ -3,7 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using AL.ALUtil;
 
+public enum DIFFICULTY
+{
+    EASY,
+    NORMAL,
+    HARD
+}
+
 public class Patterner : ALComponentSingleton<Patterner> {
+
+    [SerializeField]
+    private DIFFICULTY _difficulty = DIFFICULTY.EASY;
 
     [SerializeField]
     private MapGenerator _mapGenerator;
@@ -16,10 +26,14 @@ public class Patterner : ALComponentSingleton<Patterner> {
     private int _currentPatternCount;
     public int currentPatternCount { get { return _currentPatternCount; } }
 
+    [SerializeField]
+    private string sex = "Pattern_Hard";
+
     public int maxPatternCount { set; get; }
     public int mapWidth { get { return _mapGenerator.mapWidth; } }
     public int mapHeight { get { return _mapGenerator.mapHeight; } }
     public Tile[,] mapData { get { return _mapGenerator.mapData; } }
+    public Tile[,] nextMapData { get { return _mapGenerator.mapData; } }
     private List<Tile> _patternTiles;
 
 	void Start ()
@@ -42,15 +56,31 @@ public class Patterner : ALComponentSingleton<Patterner> {
             for (int i = 0; i < _patternTiles.Count; ++i)
             {
                 if (_patternTiles[i].patternValue.Equals(_currentPatternCount))
+                    _patternTiles[i].ExcuteReady();
+                else if (_patternTiles[i].patternValue > _currentPatternCount)
+                    break;
+            }
+            yield return new WaitForSeconds(_patternDelay);
+            for (int i = 0; i < _patternTiles.Count; ++i)
+            {
+                if (_patternTiles[i].patternValue.Equals(_currentPatternCount))
                     _patternTiles[i].Excute();
                 else if (_patternTiles[i].patternValue > _currentPatternCount)
                     break;
             }
             if (maxPatternCount >= _currentPatternCount + 1)
+            {
                 ++_currentPatternCount;
+                Debug.Log(_currentPatternCount);
+            }
             else
-                break;
+            {
+                _currentPatternCount = 1;
+                _mapGenerator.SetRandomPattern(_difficulty);
+                ParsePattern();
+            }
             yield return new WaitForSeconds(_patternDelay);
+            //_mapGenerator.SetPattern(sex);
         }
     }
 
@@ -68,10 +98,10 @@ public class Patterner : ALComponentSingleton<Patterner> {
             }
         }
         _patternTiles.Sort(TileSort);
-        for (int i = 0; i < _patternTiles.Count; ++i)
-        {
-            Debug.Log(_patternTiles[i].patternValue + "|" + _patternTiles[i].name);
-        }
+        //for (int i = 0; i < _patternTiles.Count; ++i)
+        //{
+        //    Debug.Log(_patternTiles[i].patternValue + "|" + _patternTiles[i].name);
+        //}
     }
 
     private int TileSort(Tile t1, Tile t2)

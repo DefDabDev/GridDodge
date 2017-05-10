@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AL.ALUtil;
 
 namespace GM
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : ALComponentSingleton<GameManager>
     {
         [Header("SCORE")]
         [SerializeField]
@@ -42,13 +43,16 @@ namespace GM
 
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                Application.Quit();
+
             if (start && !pause)
             {
                 score += Time.deltaTime;
 
                 scoreText.text = (uint)score + "";
-                if (score > 5)
-                    gameEnd();
+                //if (score > 5)
+                //    gameEnd();
             }
         }
 

@@ -19,4 +19,16 @@ public class Tile : MonoBehaviour {
 
     private Image _image = null;
     public Image image { get { return _image; } set { _image = value; } }
+
+    public void Excute()
+    {
+        StartCoroutine("FadeEffect");
+    }
+
+    public IEnumerator FadeEffect()
+    {
+        _image.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        _image.color = Color.white;
+    }
 }

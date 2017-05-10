@@ -32,9 +32,20 @@ public class Patterner : ALComponentSingleton<Patterner> {
     private IEnumerator RunPattern()
     {
         ParsePattern();
+        _currentPatternCount = 1;
         while (true)
         {
-
+            for (int i = 0; i < _patternTiles.Count; ++i)
+            {
+                if (_patternTiles[i].patternValue.Equals(_currentPatternCount))
+                    _patternTiles[i].Excute();
+                else if (_patternTiles[i].patternValue > _currentPatternCount)
+                    break;
+            }
+            if (maxPatternCount >= _currentPatternCount + 1)
+                ++_currentPatternCount;
+            else
+                break;
             yield return new WaitForSeconds(_patternDelay);
         }
     }

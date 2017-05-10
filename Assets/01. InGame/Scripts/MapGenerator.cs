@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class MapGenerator : MonoBehaviour {
 
     [SerializeField]
@@ -31,7 +32,7 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField]
     private int _tileMargin = 10; 
 
-	private void Start ()
+	private void Awake ()
     {
         CreateTiles();
 	}
@@ -48,9 +49,4 @@ public class MapGenerator : MonoBehaviour {
             }
         }
     }
-
-	//private void Update ()
- //   {
-		
-	//}
 }

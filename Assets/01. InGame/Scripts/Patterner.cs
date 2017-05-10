@@ -26,8 +26,12 @@ public class Patterner : ALComponentSingleton<Patterner> {
     {
         _patternTiles = new List<Tile>();
         Debug.Log("Max Pattern Count : " + maxPatternCount);
-        StartCoroutine("RunPattern");
 	}
+
+    public void runPattern()
+    {
+        StartCoroutine("RunPattern");
+    }
 
     private IEnumerator RunPattern()
     {

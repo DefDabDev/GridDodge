@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AL.ALUtil;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,8 @@ public static class ResourcesPathes
 }
 
 //[ExecuteInEditMode]
-public class MapGenerator : MonoBehaviour {
+public class MapGenerator : ALComponentSingleton<MapGenerator>
+{
 
     [SerializeField]
     Tile _tile;
@@ -46,11 +48,18 @@ public class MapGenerator : MonoBehaviour {
 
     private Tile[,] _mapData;
     public Tile[,] mapData { get { return _mapData; } set { _mapData = value; } }
-
-    private void Awake()
+    
+    public void init()
     {
         Patterner.instance.maxPatternCount = 1;
         _mapData = new Tile[_mapWidth, _mapHeight];
+        CreateTiles();
+        ParseData();
+        CheckData();
+    }
+
+    public void create()
+    {
         CreateTiles();
         ParseData();
         CheckData();

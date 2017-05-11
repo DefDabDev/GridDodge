@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class Tile : MonoBehaviour {
 
     [SerializeField]
-    private Text _text;
-    public Text text { get { return _text; } }
+    private Image _tileObject;
+    public Image tileObject { get { return _tileObject; } }
 
     [SerializeField]
     private Vector2 _index;

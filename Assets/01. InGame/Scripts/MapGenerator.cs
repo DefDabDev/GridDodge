@@ -55,7 +55,7 @@ public class MapGenerator : ALComponentSingleton<MapGenerator>
         _mapData = new Tile[_mapWidth, _mapHeight];
         CreateTiles();
         ParseData();
-        CheckData();
+        //CheckData();
     }
 
     private void CreateTiles()
@@ -105,7 +105,7 @@ public class MapGenerator : ALComponentSingleton<MapGenerator>
 
         int height = 0;
         int width = _mapWidth - 1;
-        for (int a = temp.Length - 1; a > 0; --a)
+        for (int a = temp.Length - 1; a >= 0; --a)
         {
             if (width < 0)
             {
@@ -116,19 +116,6 @@ public class MapGenerator : ALComponentSingleton<MapGenerator>
             if (_mapData[width, height].patternValue > Patterner.instance.maxPatternCount)
                 Patterner.instance.maxPatternCount = _mapData[width, height].patternValue;
             --width;
-        }
-        Debug.Log(string.Format("{0} : {1}", patternName, Patterner.instance.maxPatternCount));
-        CheckData();
-    }
-
-    private void CheckData()
-    {
-        for (int y = 0; y < _mapHeight; ++y)
-        {
-            for (int x = 0; x < _mapWidth; ++x)
-            {
-                _mapData[x, y].text.text = _mapData[x, y].patternValue.ToString();
-            }
         }
     }
 
@@ -141,7 +128,7 @@ public class MapGenerator : ALComponentSingleton<MapGenerator>
                 break;
 
             case DIFFICULTY.NORMAL:
-                ParseData(string.Format("Pattern_Easy{0}", Mathf.Floor(UnityEngine.Random.Range(1, 9))));
+                ParseData(string.Format("Pattern_Normal{0}", Mathf.Floor(UnityEngine.Random.Range(1, 9))));
                 break;
 
             case DIFFICULTY.HARD:

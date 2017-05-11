@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AL.ALUtil;
+using GM;
 
 public enum DIFFICULTY
 {
@@ -27,7 +28,7 @@ public class Patterner : ALComponentSingleton<Patterner> {
     public int currentPatternCount { get { return _currentPatternCount; } }
 
     [SerializeField]
-    private string sex = "Pattern_Hard";
+    private Sprite[] _spriteList;
 
     public int maxPatternCount { set; get; }
     public int mapWidth { get { return _mapGenerator.mapWidth; } }
@@ -39,7 +40,6 @@ public class Patterner : ALComponentSingleton<Patterner> {
 	void Start ()
     {
         _patternTiles = new List<Tile>();
-        Debug.Log("Max Pattern Count : " + maxPatternCount);
 	}
 
     public void runPattern()
@@ -53,10 +53,16 @@ public class Patterner : ALComponentSingleton<Patterner> {
         _currentPatternCount = 1;
         while (true)
         {
+            if (GameManager.pause)
+                yield return StartCoroutine("Pause");
+
             for (int i = 0; i < _patternTiles.Count; ++i)
             {
                 if (_patternTiles[i].patternValue.Equals(_currentPatternCount))
+                {
                     _patternTiles[i].ExcuteReady();
+                    SetRandomObject(_patternTiles[i]);
+                }
                 else if (_patternTiles[i].patternValue > _currentPatternCount)
                     break;
             }
@@ -64,14 +70,16 @@ public class Patterner : ALComponentSingleton<Patterner> {
             for (int i = 0; i < _patternTiles.Count; ++i)
             {
                 if (_patternTiles[i].patternValue.Equals(_currentPatternCount))
+                {
                     _patternTiles[i].Excute();
+                    SetInvisibleObject(_patternTiles[i]);
+                }
                 else if (_patternTiles[i].patternValue > _currentPatternCount)
                     break;
             }
             if (maxPatternCount >= _currentPatternCount + 1)
             {
                 ++_currentPatternCount;
-                Debug.Log(_currentPatternCount);
             }
             else
             {
@@ -80,7 +88,14 @@ public class Patterner : ALComponentSingleton<Patterner> {
                 ParsePattern();
             }
             yield return new WaitForSeconds(_patternDelay);
-            //_mapGenerator.SetPattern(sex);
+        }
+    }
+
+    private IEnumerator Pause()
+    {
+        while(GameManager.pause)
+        {
+            yield return null;
         }
     }
 
@@ -98,10 +113,17 @@ public class Patterner : ALComponentSingleton<Patterner> {
             }
         }
         _patternTiles.Sort(TileSort);
-        //for (int i = 0; i < _patternTiles.Count; ++i)
-        //{
-        //    Debug.Log(_patternTiles[i].patternValue + "|" + _patternTiles[i].name);
-        //}
+    }
+
+    private void SetRandomObject(Tile tile)
+    {
+        int index = UnityEngine.Random.Range(1, _spriteList.Length);
+        tile.tileObject.sprite = _spriteList[index];
+    }
+
+    private void SetInvisibleObject(Tile tile)
+    {
+        tile.tileObject.sprite = _spriteList[0];
     }
 
     private int TileSort(Tile t1, Tile t2)

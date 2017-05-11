@@ -77,14 +77,21 @@ namespace GM
             start = (start ? false : true);
         }
 
+        [SerializeField]
+        Animator pauseAnimator;
+
         /// <summary>
         /// 재시작 버튼 눌렀을때 호출됨
         /// </summary>
         public void reStartBT()
         {
-            pauseBT();
+            if (pause)
+            {
+                pauseBT();
+                pauseAnimator.SetTrigger("Fade");
+                scoreText.transform.SetAsLastSibling();
+            }
             gameStart();
-            character.init();
         }
         #endregion
 
@@ -107,7 +114,6 @@ namespace GM
         /// </summary>
         public void gameEnd()
         {
-            pause = true;
             resultCanvas.SetActive(true);
             resultCanvas.GetComponent<Animator>().SetTrigger("Fade");
 

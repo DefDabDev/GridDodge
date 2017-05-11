@@ -31,9 +31,20 @@ namespace CHAR
         [SerializeField]
         Transform[] spawnPoints;
 
+        [SerializeField]
+        GameObject[] childs;
+
         void Start()
         {
             init();
+        }
+
+        void Update()
+        {
+            childs[0].transform.localPosition = Vector3.Lerp(childs[0].transform.localPosition, transform.localPosition, 10 * Time.deltaTime);
+            childs[1].transform.localPosition = Vector3.Lerp(childs[1].transform.localPosition, transform.localPosition, 20 * Time.deltaTime);
+            childs[2].transform.localPosition = Vector3.Lerp(childs[2].transform.localPosition, transform.localPosition, 30 * Time.deltaTime);
+            childs[3].transform.localPosition = Vector3.Lerp(childs[2].transform.localPosition, transform.localPosition, 40 * Time.deltaTime);
         }
 
         /// <summary>

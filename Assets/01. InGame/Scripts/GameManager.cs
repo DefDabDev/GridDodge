@@ -33,6 +33,15 @@ namespace GM
         [SerializeField]
         CHAR.Character character;
 
+        [SerializeField]
+        private AudioSource _seDie;
+
+        [SerializeField]
+        private AudioClip[] _clips;
+
+        [SerializeField]
+        private Patterner _patterner;
+
         void Awake()
         {
             if (PlayerPrefs.HasKey("BESTSCORE"))
@@ -118,6 +127,11 @@ namespace GM
         {
             if (start)
             {
+                int index = Random.Range(0, _clips.Length);
+                _seDie.clip = _clips[index];
+                _seDie.Play();
+                _patterner.StopAllCoroutines();
+
                 start = false;
                 character.dead();
 

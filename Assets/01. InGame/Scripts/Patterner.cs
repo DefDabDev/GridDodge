@@ -20,6 +20,9 @@ public class Patterner : ALComponentSingleton<Patterner> {
     private MapGenerator _mapGenerator;
 
     [SerializeField]
+    private AudioSource _se;
+
+    [SerializeField]
     private float _patternDelay = 0.5f;
     public float patternDelay { get { return _patternDelay; } set { _patternDelay = value; } }
 
@@ -49,6 +52,7 @@ public class Patterner : ALComponentSingleton<Patterner> {
 
     private IEnumerator RunPattern()
     {
+        _mapGenerator.SetPattern("Pattern_Start");
         ParsePattern();
         _currentPatternCount = 1;
         while (true)
@@ -77,6 +81,7 @@ public class Patterner : ALComponentSingleton<Patterner> {
                 else if (_patternTiles[i].patternValue > _currentPatternCount)
                     break;
             }
+            _se.Play();
             if (maxPatternCount >= _currentPatternCount + 1)
             {
                 ++_currentPatternCount;

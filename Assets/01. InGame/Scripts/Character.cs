@@ -98,12 +98,12 @@ namespace CHAR
         }
 
         /// <summary>
-        /// Move to position ( s-case 가 귀찮아서 함수 여러개 만듬 )
+        /// Move to position
         /// </summary>
         #region _MOVE_TO_
         public void moveToUp()
         {
-            if (charPos.posY < Point.MAX_POS_Y && !GM.GameManager.pause && !GM.GameManager.start)
+            if (charPos.posY < Point.MAX_POS_Y && !GM.GameManager.pause)
             {
                 charPos.posY++;
                 transform.localPosition += new Vector3(0, Tile.TILE_HEIGHT);
@@ -111,7 +111,7 @@ namespace CHAR
         }
         public void moveToRight()
         {
-            if (charPos.posX < Point.MAX_POS_X && !GM.GameManager.pause && !GM.GameManager.start)
+            if (charPos.posX < Point.MAX_POS_X && !GM.GameManager.pause)
             {
                 charPos.posX++;
                 transform.localPosition += new Vector3(Tile.TILE_WIDTH, 0);
@@ -119,7 +119,7 @@ namespace CHAR
         }
         public void moveToLeft()
         {
-            if (charPos.posX > Point.MIN_POS_Y && !GM.GameManager.pause && !GM.GameManager.start)
+            if (charPos.posX > Point.MIN_POS_Y && !GM.GameManager.pause)
             {
                 charPos.posX--;
                 transform.localPosition -= new Vector3(Tile.TILE_WIDTH, 0);
@@ -127,7 +127,7 @@ namespace CHAR
         }
         public void moveToDown()
         {
-            if (charPos.posY > Point.MIN_POS_Y && !GM.GameManager.pause && !GM.GameManager.start)
+            if (charPos.posY > Point.MIN_POS_Y && !GM.GameManager.pause)
             {
                 charPos.posY--;
                 transform.localPosition -= new Vector3(0, Tile.TILE_HEIGHT);

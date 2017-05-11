@@ -12,6 +12,14 @@ public class Tile : MonoBehaviour {
     public Image tileObject { get { return _tileObject; } }
 
     [SerializeField]
+    private SpriteAnimation _readyAnimation;
+    public new SpriteAnimation readyAnimation { get { return _readyAnimation; } }
+
+    [SerializeField]
+    private SpriteAnimation _runAnimation;
+    public new SpriteAnimation runAnimation { get { return _runAnimation; } }
+
+    [SerializeField]
     private Vector2 _index;
     public Vector2 index { get { return _index; } set { _index = value; } }
 
@@ -29,9 +37,10 @@ public class Tile : MonoBehaviour {
 
     public IEnumerator ReadyEffect()
     {
-        _image.color = Color.yellow;
+        //_image.color = Color.yellow;
+        _readyAnimation.Play();
         yield return new WaitForSeconds(1f);
-        _image.color = Color.white;
+        //_image.color = Color.white;
     }
 
     public void Excute()
@@ -45,8 +54,9 @@ public class Tile : MonoBehaviour {
         value.posX = (uint)index.x;
         value.posY = (uint)index.y;
         GameManager.instance.bombCheck(value);
-        _image.color = Color.red;
+        //_image.color = Color.red;
+        _runAnimation.Play();
         yield return new WaitForSeconds(1f);
-        _image.color = Color.white;
+        //_image.color = Color.white;
     }
 }

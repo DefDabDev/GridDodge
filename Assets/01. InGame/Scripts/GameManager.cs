@@ -34,6 +34,9 @@ namespace GM
         CHAR.Character character;
 
         [SerializeField]
+        private AudioSource _audioManager;
+
+        [SerializeField]
         private AudioSource _seDie;
 
         [SerializeField]
@@ -44,11 +47,12 @@ namespace GM
 
         void Awake()
         {
-            if (PlayerPrefs.HasKey("BESTSCORE"))
+            if (!PlayerPrefs.HasKey("BESTSCORE"))
                 PlayerPrefs.SetInt("BESTSCORE", 0);
             bestScoreText.text = "" + PlayerPrefs.GetInt("BESTSCORE");
 
             MapGenerator.instance.init();
+            //_audioManager.volume *= 0.5f;
         }
 
         void Update()
@@ -108,13 +112,17 @@ namespace GM
         /// </summary>
         public void gameStart()
         {
-            character.init();
+            //_audioManager.volume = 1f;
+            if (!start)
+            {
+                character.init();
 
-            score = 0;
-            scoreText.text = (uint)score + "";
+                score = 0;
+                scoreText.text = (uint)score + "";
 
-            pause = false;
-            start = true;
+                pause = false;
+                start = true;
+            }
         }
 
         /// <summary>
@@ -124,6 +132,7 @@ namespace GM
         {
             if (start)
             {
+                //_audioManager.volume *= 0.5f;
                 int index = Random.Range(0, _clips.Length);
                 _seDie.clip = _clips[index];
                 _seDie.Play();

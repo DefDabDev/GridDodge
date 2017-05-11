@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/01. InGame/InGame.unity
+- path: Assets/00. Tutorial/Tutorial.unity
   isLoaded: 1
   isActive: 1

@@ -9,6 +9,9 @@ public class LogoCtrl : MonoBehaviour {
     [SerializeField]
     Text _text;
 
+    [SerializeField]
+    Save _save;
+
 	private void Start ()
     {
         _text.text = string.Empty;
@@ -28,7 +31,10 @@ public class LogoCtrl : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
         _text.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
-        SceneManager.LoadScene("InGame");
+        if (_save.isFirst)
+            SceneManager.LoadScene("Tutorial");
+        else
+            SceneManager.LoadScene("InGame");
     }
 
     private void Update()

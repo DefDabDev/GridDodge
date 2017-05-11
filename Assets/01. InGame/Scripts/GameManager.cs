@@ -35,7 +35,8 @@ namespace GM
 
         void Awake()
         {
-            PlayerPrefs.SetInt("BESTSCORE", 0);
+            if (PlayerPrefs.HasKey("BESTSCORE"))
+                PlayerPrefs.SetInt("BESTSCORE", 0);
             bestScoreText.text = "Best Score \n" + PlayerPrefs.GetInt("BESTSCORE");
 
             MapGenerator.instance.init();
@@ -107,6 +108,7 @@ namespace GM
             scoreText.text = (uint)score + "";
 
             pause = false;
+            start = true;
         }
 
         /// <summary>
@@ -114,13 +116,19 @@ namespace GM
         /// </summary>
         public void gameEnd()
         {
-            resultCanvas.SetActive(true);
-            resultCanvas.GetComponent<Animator>().SetTrigger("Fade");
+            if (start)
+            {
+                start = false;
+                character.dead();
 
-            e_nowScoreText.text = "Score : " + (uint)score;
-            if (PlayerPrefs.GetInt("BESTSCORE") < (uint)score)
-                PlayerPrefs.SetInt("BESTSCORE", (int)score);
-            e_bestScoreText.text = "Best Score : " + PlayerPrefs.GetInt("BESTSCORE");
+                resultCanvas.SetActive(true);
+                resultCanvas.GetComponent<Animator>().SetTrigger("Fade");
+
+                e_nowScoreText.text = "Score : " + (uint)score;
+                if (PlayerPrefs.GetInt("BESTSCORE") < (uint)score)
+                    PlayerPrefs.SetInt("BESTSCORE", (int)score);
+                e_bestScoreText.text = "Best Score : " + PlayerPrefs.GetInt("BESTSCORE");
+            }
         }
 
         /// <summary>
@@ -129,9 +137,10 @@ namespace GM
         /// <param name="p">폭탄 위치</param>
         public void bombCheck(CHAR.Point p)
         {
-            if (character.charPos.posX.Equals(p.posX) && character.charPos.posY.Equals(p.posY))
+            if (character.charPos.posX.Equals(p.posX) && character.charPos.posY.Equals(p.posY) && !pause)
                 gameEnd();
         }
+        
         #endregion
     }
 }

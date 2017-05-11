@@ -34,6 +34,9 @@ namespace CHAR
         [SerializeField]
         GameObject[] childs;
 
+        [SerializeField]
+        Animator anim;
+
         void Start()
         {
             init();
@@ -41,10 +44,8 @@ namespace CHAR
 
         void Update()
         {
-            childs[0].transform.localPosition = Vector3.Lerp(childs[0].transform.localPosition, transform.localPosition, 10 * Time.deltaTime);
-            childs[1].transform.localPosition = Vector3.Lerp(childs[1].transform.localPosition, transform.localPosition, 20 * Time.deltaTime);
-            childs[2].transform.localPosition = Vector3.Lerp(childs[2].transform.localPosition, transform.localPosition, 30 * Time.deltaTime);
-            childs[3].transform.localPosition = Vector3.Lerp(childs[2].transform.localPosition, transform.localPosition, 40 * Time.deltaTime);
+            for (int i = 0; i < 4; i++)
+                childs[i].transform.localPosition = Vector3.Lerp(childs[i].transform.localPosition, transform.localPosition, (i + 1) * 10 * Time.deltaTime);
         }
 
         /// <summary>
@@ -52,6 +53,10 @@ namespace CHAR
         /// </summary>
         public void init()
         {
+            anim.SetTrigger("Dead");
+            for (int i = 0; i < 4; i++)
+                childs[i].gameObject.SetActive(true);
+
             switch (Random.Range(0, 4))
             {
                 case 0:
@@ -78,8 +83,19 @@ namespace CHAR
                     Debug.LogError("Random Range ERROR !");
                     break;
             }
+
+            for (int i = 0; i < 4; i++)
+                childs[i].transform.localPosition = transform.localPosition;
         }
 
+
+        public void dead()
+        {
+            anim.SetTrigger("Dead");
+
+            for (int i = 0; i < 4; i++)
+                childs[i].gameObject.SetActive(false);
+        }
 
         /// <summary>
         /// Move to position

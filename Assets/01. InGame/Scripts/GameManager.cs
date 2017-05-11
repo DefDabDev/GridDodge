@@ -37,7 +37,7 @@ namespace GM
         {
             if (PlayerPrefs.HasKey("BESTSCORE"))
                 PlayerPrefs.SetInt("BESTSCORE", 0);
-            bestScoreText.text = "Best Score \n" + PlayerPrefs.GetInt("BESTSCORE");
+            bestScoreText.text = "" + PlayerPrefs.GetInt("BESTSCORE");
 
             MapGenerator.instance.init();
         }
@@ -90,7 +90,6 @@ namespace GM
             {
                 pauseBT();
                 pauseAnimator.SetTrigger("Fade");
-                scoreText.transform.SetAsLastSibling();
             }
             gameStart();
         }
@@ -124,10 +123,10 @@ namespace GM
                 resultCanvas.SetActive(true);
                 resultCanvas.GetComponent<Animator>().SetTrigger("Fade");
 
-                e_nowScoreText.text = "Score : " + (uint)score;
+                e_nowScoreText.text = "" + (uint)score;
                 if (PlayerPrefs.GetInt("BESTSCORE") < (uint)score)
                     PlayerPrefs.SetInt("BESTSCORE", (int)score);
-                e_bestScoreText.text = "Best Score : " + PlayerPrefs.GetInt("BESTSCORE");
+                e_bestScoreText.text = "" + PlayerPrefs.GetInt("BESTSCORE");
             }
         }
 
